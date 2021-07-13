@@ -96,26 +96,35 @@ cacheResType cacheSimDM(unsigned int addr)
 	temp_addr /= (1 << bits_index);
 	L.tag = temp_addr;
 
-	for (int i = 0; i < NO_WAYS; i++)
+	int i = 0;
+	for (; i < NO_WAYS; i++)
 	{
-
-		if (!set_associative_cache[L.index][i].first)
+		if (set_associative_cache[L.index][i].first)
+		{
+			if (set_associative_cache[L.index][i].second == L.tag)
+				return HIT;
+		}
+		else break;
+	
 	}
-	
-
-
-
-
-
-	
-
+	// This case means we will replace the fisrt address in the set by the new address
+	if (i == NO_WAYS)
+	{
+		set_associative_cache[L.index][i].second = L.tag;
+	}
+	// This case means that there is still empty place in the set to store the address
+	else
+	{
+		set_associative_cache[L.index][i].first = 1;
+		set_associative_cache[L.index][i].second = L.tag;
+	}
 	return MISS; 
 }
 
 
 char* msg[2] = { (char*)"Miss", (char*)"Hit" };
 
-#define		NO_OF_Iterations	1,000,000		// CHange to 1,000,000
+#define		NO_OF_Iterations	1000000	// CHange to 1,000,000
 int main()
 {
 	unsigned int hit = 0;
@@ -126,10 +135,10 @@ int main()
 
 	for (int inst = 0; inst < NO_OF_Iterations; inst++)
 	{
-		addr = memGenB();
+		addr = memGenD();
 		r = cacheSimDM(addr);
 		if (r == HIT) hit++;
-		cout << "0x" << setfill('0') << setw(8) << hex << addr << " (" << msg[r] << ")\n";
+		//cout << "0x" << setfill('0') << setw(8) << hex << addr << " (" << msg[r] << ")\n";
 	}
-	cout << "Hit ratio = " << (100 * hit / NO_OF_Iterations) << endl;
+	cout << "Hit ratio = " << (100 * hit / NO_OF_Iterations) <<" %" <<endl;
 }
