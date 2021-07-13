@@ -86,7 +86,7 @@ unsigned int memGenF()
 // Direct Mapped Cache Simulator
 cacheResType cacheSimDM(unsigned int addr)
 {
-	// This function accepts the memory address for the memory transaction and 
+	// This function accepts the memory address for the memory transaction and
 	// returns whether it caused a cache miss or a cache hit
 
 	// The current implementation assumes there is no cache; so, every transaction is a miss
@@ -105,7 +105,7 @@ cacheResType cacheSimDM(unsigned int addr)
 				return HIT;
 		}
 		else break;
-	
+
 	}
 	// This case means we will replace the fisrt address in the set by the new address
 	if (i == NO_WAYS)
@@ -118,7 +118,7 @@ cacheResType cacheSimDM(unsigned int addr)
 		set_associative_cache[L.index][i].first = 1;
 		set_associative_cache[L.index][i].second = L.tag;
 	}
-	return MISS; 
+	return MISS;
 }
 
 
@@ -140,5 +140,5 @@ int main()
 		if (r == HIT) hit++;
 		//cout << "0x" << setfill('0') << setw(8) << hex << addr << " (" << msg[r] << ")\n";
 	}
-	cout << "Hit ratio = " << (100 * hit / NO_OF_Iterations) <<" %" <<endl;
+	cout << "Hit ratio = " << (float)(100.0 * hit / NO_OF_Iterations) <<" %" <<endl;
 }
