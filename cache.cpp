@@ -1,11 +1,24 @@
 #include <iostream>
 #include  <iomanip>
+#include  <math.h>
+#include <vector>
 
 using namespace std;
 
 #define		DBG				1
 #define		DRAM_SIZE		(64*1024*1024)
 #define		CACHE_SIZE		(64*1024)
+#define		CASHE_LINE_SIZE	(16)
+#define		NO_WAYS			(1)
+
+
+int no_lines = CACHE_SIZE / CASHE_LINE_SIZE;
+int bits_index = log2(no_lines);
+int no_byte_offset = log2(CASHE_LINE_SIZE);
+
+
+// First ---> Validity Bit ,  Second ----> TAG
+vector < vector<pair<int, int>>> set_associative_cache(no_lines, vector< pair<int, int>>(NO_WAYS, { 0,0 }));
 
 enum cacheResType { MISS = 0, HIT = 1 };
 
@@ -18,6 +31,18 @@ unsigned int rand_()
 	m_w = 18000 * (m_w & 65535) + (m_w >> 16);
 	return (m_z << 16) + m_w;  /* 32-bit result */
 }
+
+
+
+
+
+
+struct cache_line
+{
+	bool validity;
+	int index;
+	int tag;
+};
 
 unsigned int memGenA()
 {
@@ -65,11 +90,30 @@ cacheResType cacheSimDM(unsigned int addr)
 	// returns whether it caused a cache miss or a cache hit
 
 	// The current implementation assumes there is no cache; so, every transaction is a miss
-	return MISS;
+	cache_line L;
+	int temp_addr = addr >> no_byte_offset;
+	L.index = temp_addr % (1 << bits_index);
+	temp_addr /= (1 << bits_index);
+	L.tag = temp_addr;
+
+	for (int i = 0; i < NO_WAYS; i++)
+	{
+
+		if (!set_associative_cache[L.index][i].first)
+	}
+	
+
+
+
+
+
+	
+
+	return MISS; 
 }
 
 
-char* msg[2] = { (char *)"Miss", (char *)"Hit" };
+char* msg[2] = { (char*)"Miss", (char*)"Hit" };
 
 #define		NO_OF_Iterations	1,000,000		// CHange to 1,000,000
 int main()
