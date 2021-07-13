@@ -110,7 +110,7 @@ cacheResType cacheSimDM(unsigned int addr)
 	// This case means we will replace the fisrt address in the set by the new address
 	if (i == NO_WAYS)
 	{
-		set_associative_cache[L.index][i].second = L.tag;
+		set_associative_cache[L.index][rand() % NO_WAYS].second = L.tag;
 	}
 	// This case means that there is still empty place in the set to store the address
 	else
