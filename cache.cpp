@@ -12,9 +12,9 @@ using namespace std;
 #define		NO_WAYS			(1)
 
 
-int no_lines = CACHE_SIZE / CASHE_LINE_SIZE;
-int bits_index = log2(no_lines);
-int no_byte_offset = log2(CASHE_LINE_SIZE);
+int no_lines = (CACHE_SIZE / CASHE_LINE_SIZE) / NO_WAYS; // 4  8 lines  --> 4
+int bits_index = log2(no_lines); // 2 3 bits
+int no_byte_offset = log2(CASHE_LINE_SIZE); // 2  3
 
 
 // First ---> Validity Bit ,  Second ----> TAG
@@ -124,7 +124,7 @@ cacheResType cacheSimDM(unsigned int addr)
 
 char* msg[2] = { (char*)"Miss", (char*)"Hit" };
 
-#define		NO_OF_Iterations	1000000	// CHange to 1,000,000
+#define		NO_OF_Iterations	5	// CHange to 1,000,000
 int main()
 {
 	unsigned int hit = 0;
@@ -135,10 +135,23 @@ int main()
 
 	for (int inst = 0; inst < NO_OF_Iterations; inst++)
 	{
-		addr = memGenD();
+		//addr = memGenB();
+		cin>>addr;
 		r = cacheSimDM(addr);
 		if (r == HIT) hit++;
 		//cout << "0x" << setfill('0') << setw(8) << hex << addr << " (" << msg[r] << ")\n";
 	}
+
+    // validation
+    /*
+	for(int i=0; i<no_lines; i++){
+        cout << "index " << i << ": ";
+        for(int j=0; j<NO_WAYS; j++){
+            cout<< "v: "<< set_associative_cache[i][j].first << " tag: "<< set_associative_cache[i][j].second << "  ,  ";
+        }
+        cout<<endl;
+	}
+    */
 	cout << "Hit ratio = " << (float)(100.0 * hit / NO_OF_Iterations) <<" %" <<endl;
+	cout << "Miss ratio = " << 100.0 - (float)(100.0 * hit / NO_OF_Iterations) <<" %" <<endl;
 }
