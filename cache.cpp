@@ -91,9 +91,12 @@ cacheResType cacheSimDM(unsigned int addr)
 
 	// The current implementation assumes there is no cache; so, every transaction is a miss
 	cache_line L;
+	// Exclude offset bits
 	int temp_addr = addr >> no_byte_offset;
+	// Get index bits
 	L.index = temp_addr % (1 << bits_index);
 	temp_addr /= (1 << bits_index);
+	// Get tag bits
 	L.tag = temp_addr;
 
 	int i = 0;
@@ -135,14 +138,16 @@ int main()
 
 	for (int inst = 0; inst < NO_OF_Iterations; inst++)
 	{
-		//addr = memGenB();
-		cin>>addr;
+		// comment when testing
+		addr = memGenB();
+		// Uncomment in testing to input addresses
+		//cin>>addr;
 		r = cacheSimDM(addr);
 		if (r == HIT) hit++;
 		//cout << "0x" << setfill('0') << setw(8) << hex << addr << " (" << msg[r] << ")\n";
 	}
 
-    // validation
+    // validation --> Uncomment when testing
     /*
 	for(int i=0; i<no_lines; i++){
         cout << "index " << i << ": ";
