@@ -12,9 +12,9 @@ using namespace std;
 #define		NO_WAYS			(1)
 
 
-int no_lines = (CACHE_SIZE / CASHE_LINE_SIZE); // 4  8 lines  --> 4
-int bits_index = log2(no_lines); // 2 3 bits
-int no_byte_offset = log2(CASHE_LINE_SIZE); // 2  3
+int no_lines = (CACHE_SIZE / CASHE_LINE_SIZE);
+int bits_index = log2(no_lines);
+int no_byte_offset = log2(CASHE_LINE_SIZE);
 
 
 // First ---> Validity Bit ,  Second ----> TAG
@@ -39,7 +39,6 @@ unsigned int rand_()
 
 struct cache_line
 {
-	bool validity;
 	int index;
 	int tag;
 };
@@ -89,7 +88,7 @@ cacheResType cacheSimDM(unsigned int addr)
 	// This function accepts the memory address for the memory transaction and
 	// returns whether it caused a cache miss or a cache hit
 
-	
+
 	cache_line L;
 	// Exclude offset bits
 	int temp_addr = addr >> no_byte_offset;
@@ -124,13 +123,12 @@ cacheResType cacheSimDM(unsigned int addr)
 	return MISS;
 }
 
-
 char* msg[2] = { (char*)"Miss", (char*)"Hit" };
 
-#define		NO_OF_Iteraions	1000000	// CHange to 1,000,000
+#define		NO_OF_Iterations	1000000	// CHange to 1,000,000
 int main()
 {
-	unsigned int hit = 0;
+	float hit = 0;
 	cacheResType r;
 
 	unsigned int addr;
@@ -138,25 +136,23 @@ int main()
 
 	for (int inst = 0; inst < NO_OF_Iterations; inst++)
 	{
-		// comment when testing
-		addr = memGenB();
-		// Uncomment in testing to input addresses
-		//cin>>addr;
+		//cin >> addr;
+		addr = memGenA();
 		r = cacheSimDM(addr);
 		if (r == HIT) hit++;
 		//cout << "0x" << setfill('0') << setw(8) << hex << addr << " (" << msg[r] << ")\n";
 	}
-
-    // validation --> Uncomment when testing
-    /*
+	//cout << "Hit ratio = " << (float)(100.0 * hit / NO_OF_Iterations) << " %" << endl;
+	// validation --> Uncomment when testing
+	/*
 	for(int i=0; i<no_lines; i++){
-        cout << "index " << i << ": ";
-        for(int j=0; j<NO_WAYS; j++){
-            cout<< "v: "<< set_associative_cache[i][j].first << " tag: "<< set_associative_cache[i][j].second << "  ,  ";
-        }
-        cout<<endl;
-	}
-    */
-	cout << "Hit ratio = " << (float)(100.0 * hit / NO_OF_Iterations) <<" %" <<endl;
-	cout << "Miss ratio = " << 100.0 - (float)(100.0 * hit / NO_OF_Iterations) <<" %" <<endl;
+		cout << "index " << i << ": ";
+		for(int j=0; j<NO_WAYS; j++){
+			cout<< "v: "<< set_associative_cache[i][j].first << " tag: "<< set_associative_cache[i][j].second << "  ,  ";
+		}
+		cout<<endl;
+	}*/
+	
+	cout << "Hit ratio = " << (float)(100.0 * hit / NO_OF_Iterations) << " %" << endl;
+	cout << "Miss ratio = " << 100.0 - (float)(100.0 * hit / NO_OF_Iterations) << " %" << endl;
 }
