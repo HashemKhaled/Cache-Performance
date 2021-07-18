@@ -127,7 +127,7 @@ cacheResType cacheSimDM(unsigned int addr)
 
 char* msg[2] = { (char*)"Miss", (char*)"Hit" };
 
-#define		NO_OF_Iterations	5	// CHange to 1,000,000
+#define		NO_OF_Iteraions	1000000	// CHange to 1,000,000
 int main()
 {
 	unsigned int hit = 0;
