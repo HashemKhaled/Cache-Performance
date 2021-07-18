@@ -12,7 +12,7 @@ using namespace std;
 #define		NO_WAYS			(1)
 
 
-int no_lines = (CACHE_SIZE / CASHE_LINE_SIZE) / NO_WAYS; // 4  8 lines  --> 4
+int no_lines = (CACHE_SIZE / CASHE_LINE_SIZE); // 4  8 lines  --> 4
 int bits_index = log2(no_lines); // 2 3 bits
 int no_byte_offset = log2(CASHE_LINE_SIZE); // 2  3
 
