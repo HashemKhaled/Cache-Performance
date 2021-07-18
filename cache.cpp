@@ -89,7 +89,7 @@ cacheResType cacheSimDM(unsigned int addr)
 	// This function accepts the memory address for the memory transaction and
 	// returns whether it caused a cache miss or a cache hit
 
-	// The current implementation assumes there is no cache; so, every transaction is a miss
+	
 	cache_line L;
 	// Exclude offset bits
 	int temp_addr = addr >> no_byte_offset;
